@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GuessQuest | Guess the Number Game</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fafafa;
+    color: #262626;
+    text-align: center;
+    padding: 20px;
+  }
+  #axis {
+    position: relative;
+    height: 20px;
+    background-color: #dbdbdb;
+    margin: 20px 0;
+    border-radius: 10px;
+  }
+  .marker {
+    position: absolute;
+    height: 20px;
+    width: 4px;
+    background-color: #3897f0;
+    bottom: 0;
+  }
+  .label {
+    position: absolute;
+    background-color: #fff;
+    color: #262626;
+    padding: 2px 5px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    transform: translate(-50%, -100%);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  /* Responsive design adjustments */
+  @media (max-width: 600px) {
+    .label {
+      font-size: 0.7rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>GuessQuest</h1>
+<h2>Guess the Number Game</h2>
+<p>Guess a number between 1 and 100</p>
+<input type="number" id="guessField" placeholder="Enter number">
+<button onclick="checkGuess()" id="guessButton">Guess</button>
+<div id="axis"></div>
+<p id="status"></p>
+<p>Step into the world of "GuessQuest: Guess the Number Game," an enthralling online adventure that's taking the puzzle community by storm. Engage your mind and test your intuition as you navigate through the numbers in a quest for the ultimate digital trophy. Optimized for gaming aficionados and puzzle-solvers alike, GuessQuest offers a responsive and immersive experience across all devices. With every guess from 1 to 100, you're not just playing—you're enhancing your deductive skills and joining a global community of strategy buffs and enthusiasts. Designed with a modern, intuitive interface that echoes the most popular social platforms, GuessQuest is more than a game—it's a number detective's haven. So, if you're looking for a mental challenge that's as entertaining as it is brain-boosting, look no further. Your quest begins here with "GuessQuest: Guess the Number Game"—where every guess is a step closer to victory!</p>
+<script>
+var randomNumber = Math.floor(Math.random() * 100) + 1;
+var guesses = 0;
+var maxTries = 10;
+
+function checkGuess() {
+  var guessButton = document.getElementById('guessButton');
+  if (guessButton.innerText === "Again") {
+    window.location.reload();
+    return;
+  }
+  
+  var userGuess = parseInt(document.getElementById('guessField').value);
+  var feedbackText;
+  
+  if (userGuess < randomNumber) {
+    feedbackText = `${userGuess} is too low`;
+  } else if (userGuess > randomNumber) {
+    feedbackText = `${userGuess} is too high`;
+  } else {
+    feedbackText = `${userGuess} is Correct!`;
+    endGame();
+  }
+  
+  placeMarker(userGuess, feedbackText);
+  guesses++;
+  updateHearts(guesses);
+}
+
+function updateHearts(guesses) {
+  var result = document.getElementById('result');
+  result.innerHTML = 'Attempts: ' + '♥ '.repeat(guesses) + '♡ '.repeat(maxTries - guesses);
+}
+
+function placeMarker(guess, note) {
+  var axis = document.getElementById('axis');
+  var percentage = (guess - 1);
+
+  var marker = document.createElement('div');
+  marker.className = 'marker';
+  marker.style.left = `calc(${percentage}% - 5px)`;
+
+  if (note.includes('Correct')) {
+    marker.classList.add('correct');
+  }
+
+  axis.appendChild(marker);
+
+  var label = document.createElement('div');
+  label.className = 'label';
+  label.textContent = note;
+  label.style.left = `calc(${percentage}% - 5px)`;
+
+  axis.appendChild(label);
+}
+
+function endGame() {
+  document.getElementById('guessField').disabled = true;
+  document.getElementById('guessButton').innerText = "Again";
+}
+
+// Remove the generation of numbers on the axis
+
+</script>
+
+</body>
+</html>
